@@ -5,7 +5,7 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-A nuxt module that installs the directive "v-nuxt-parallax" for a quick and easy parallax effect.
+A nuxt module that installs the directive "v-parallax" for a quick and easy parallax effect.
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
 
