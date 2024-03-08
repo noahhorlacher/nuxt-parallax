@@ -1,40 +1,53 @@
 import { defineNuxtPlugin } from '#app'
 
 export default defineNuxtPlugin((nuxtApp) => {
-  console.log('Plugin injected by nuxt-parallax!')
-})
+  nuxtApp.vueApp.directive('parallax', {
+    mounted(element: ExtendedHTMLElement, binding: { value: NuxtParallaxPluginOptions }) {
+      const opts = { speed: binding.value.speed || 1 }
+      const debouncedHandleScroll = debounce(() => handleScroll(element, opts), 10)
 
-import { handleScroll, debounce } from './lib/plugin.js'
-
-export default defineNuxtPlugin((nuxtApp) => {
-  console.log('Plugin injected by nuxt-parallax!')
-  meta: {
-    name: 'nuxt-3-prlx',
-    configKey: 'nuxt3Prlx',
-    compatibility: {
-      nuxt: '^3.0.0'
+      element._handleScroll = () => debouncedHandleScroll()
+      window.addEventListener('scroll', (element as any)._handleScroll)
+    },
+    unmounted(el: HTMLElement) {
+      window.removeEventListener('scroll', (el as any)._handleScroll)
+      delete (el as any)._handleScroll
     }
-  },
-  defaults: {},
-  setup(options, nuxt) {
-    nuxt.hook('app:setup', (app) => {
-        return {
-            directives: {
-                prlx: {
-                    mounted(el, binding) {
-                        const opts = { speed: binding.value.speed || 1 }
-                        const debouncedHandleScroll = debounce(() => handleScroll(el, opts), 10)
-            
-                        el._handleScroll = () => debouncedHandleScroll()
-                        window.addEventListener('scroll', el._handleScroll)
-                    },
-                    unmounted(el) {
-                        window.removeEventListener('scroll', el._handleScroll)
-                        delete el._handleScroll
-                    }
-                }
-            }
-        }
-    })
-  },
+  })
 })
+
+interface ExtendedHTMLElement extends HTMLElement {
+  _handleScroll?: () => void
+}
+
+interface NuxtParallaxPluginOptions {
+  speed: number
+}
+
+function handleScroll(element: HTMLElement, options: NuxtParallaxPluginOptions): void {
+  if (!element || !isElementInViewport(element)) return
+
+  const scrollY = -window.scrollY * options.speed
+  requestAnimationFrame(() => {
+    element.style.translate = `0px ${scrollY}px` // Use transform for better performance
+  })
+}
+
+function isElementInViewport(element: HTMLElement): boolean {
+  const rect = element.getBoundingClientRect()
+  return (
+    rect.bottom >= 0 &&
+    rect.right >= 0 &&
+    rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+  )
+}
+
+function debounce(callback: Function, delay: number) {
+  let inDebounce: number | ReturnType<typeof setTimeout> | null = null
+
+  return function(this: any, ...args: any) {
+    clearTimeout(inDebounce as number)
+    inDebounce = setTimeout(() => callback.apply(this, args), delay)
+  }
+}
