@@ -1,6 +1,6 @@
 {
   "name": "nuxt-parallax",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A nuxt module for an easy parallax Vue directive.",
   "repository": "https://github.com/noahhorlacher/nuxt-3-prlx",
   "license": "MIT",
