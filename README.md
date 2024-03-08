@@ -37,7 +37,7 @@ export default defineNuxtConfig({
 That's it! You can now use Nuxt Parallax in your Nuxt app ✨
 
 ## Usage
-Add the directive to any element like this: `<div v-parallax:options="{ speed: 0.5 }">Hello World!</div>`
+Add the directive to any element like this: `<div v-parallax="{ speed: 0.5 }">Hello World!</div>`
 Pass in the options as an object.
 
 ## Options

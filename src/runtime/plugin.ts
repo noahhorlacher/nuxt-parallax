@@ -2,9 +2,9 @@ import { defineNuxtPlugin } from '#app'
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.directive('parallax', {
-    mounted(element: ExtendedHTMLElement, binding: { value: NuxtParallaxPluginOptions }) {
-      const opts = { speed: binding.value.speed || 1 }
-      const debouncedHandleScroll = debounce(() => handleScroll(element, opts), 10)
+    mounted(element: ExtendedHTMLElement, binding: { value: NuxtParallaxOptions }) {
+      const sanitizedOptions = { speed: binding.value.speed || 1 }
+      const debouncedHandleScroll = debounce(() => handleScroll(element, sanitizedOptions), 10)
 
       element._handleScroll = () => debouncedHandleScroll()
       window.addEventListener('scroll', (element as any)._handleScroll)
@@ -20,11 +20,11 @@ interface ExtendedHTMLElement extends HTMLElement {
   _handleScroll?: () => void
 }
 
-interface NuxtParallaxPluginOptions {
+interface NuxtParallaxOptions {
   speed: number
 }
 
-function handleScroll(element: HTMLElement, options: NuxtParallaxPluginOptions): void {
+function handleScroll(element: HTMLElement, options: NuxtParallaxOptions): void {
   if (!element || !isElementInViewport(element)) return
 
   const scrollY = -window.scrollY * options.speed
