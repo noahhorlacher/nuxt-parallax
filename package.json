@@ -1,6 +1,6 @@
 {
   "name": "nuxt-parallax",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A nuxt module for an easy parallax Vue directive.",
   "keywords": [
     "nuxt",
