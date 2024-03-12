@@ -29,7 +29,7 @@ function handleScroll(element: HTMLElement, options: NuxtParallaxOptions): void 
 
   const scrollY = -window.scrollY * options.speed
   requestAnimationFrame(() => {
-    element.style.translate = `0px ${scrollY}px` // Use transform for better performance
+    element.style.setProperty('transform', `translate3d(0, ${scrollY}px, 0)`)
   })
 }
 

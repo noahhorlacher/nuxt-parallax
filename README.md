@@ -37,6 +37,8 @@ export default defineNuxtConfig({
 That's it! You can now use Nuxt Parallax in your Nuxt app ✨
 
 ## Usage
+_**Please note:** If you encounter an issue where elements with the parallax effect overlap other elements, you can fix this by applying `position: relative` to the overlapped elements. This adjusts the stacking context and prevents the parallax elements from overlaying other elements, that are rendered later in the markdown. Some elements have `position: static` applied to them by default, which won't work._
+
 Add the directive to any element like this: `<div v-parallax="{ speed: 0.5 }">Hello World!</div>`
 Pass in the options as an object.
 
