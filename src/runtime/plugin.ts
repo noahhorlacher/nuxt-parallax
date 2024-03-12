@@ -4,7 +4,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.directive('parallax', {
     mounted(element: ExtendedHTMLElement, binding: { value: NuxtParallaxOptions }) {
       // save original transform style
-      element._originalTransform = element.style.transform
+      element._originalTransform = window.getComputedStyle(element).transform
+      if(element._originalTransform === 'none') element._originalTransform = undefined
+
+      console.log(element._originalTransform)
 
       const sanitizedOptions = { speed: binding.value.speed || 1 }
       const debouncedHandleScroll = debounce(() => handleScroll(element, sanitizedOptions), 10)
