@@ -3,6 +3,9 @@ import { defineNuxtPlugin } from '#app'
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.directive('parallax', {
     mounted(element: ExtendedHTMLElement, binding: { value: NuxtParallaxOptions }) {
+      // save original transform style
+      element._originalTransform = element.style.transform
+
       const sanitizedOptions = { speed: binding.value.speed || 1 }
       const debouncedHandleScroll = debounce(() => handleScroll(element, sanitizedOptions), 10)
 
@@ -18,18 +21,23 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 interface ExtendedHTMLElement extends HTMLElement {
   _handleScroll?: () => void
+  _originalTransform?: string
 }
 
 interface NuxtParallaxOptions {
   speed: number
 }
 
-function handleScroll(element: HTMLElement, options: NuxtParallaxOptions): void {
+function handleScroll(element: ExtendedHTMLElement, options: NuxtParallaxOptions): void {
   if (!element || !isElementInViewport(element)) return
 
   const scrollY = -window.scrollY * options.speed
+  const scrollX = 0 // -window.scrollX * options.speedX
+
+  
   requestAnimationFrame(() => {
-    element.style.setProperty('transform', `translate3d(0, ${scrollY}px, 0)`)
+    // Always apply the new transform, regardless of whether an original transform exists
+    element.style.transform = `${element._originalTransform ? `${element._originalTransform} ` : ''}translate3d(${ scrollX }px, ${scrollY}px, 0)`
   })
 }
 

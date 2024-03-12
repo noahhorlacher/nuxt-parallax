@@ -3,7 +3,7 @@
     <p v-parallax="{ speed: -0.02 }" style="background-color: red; padding: 80px;">
       Parallax speed: -0.02
     </p>
-    <p v-parallax="{ speed: -0.2 }" style="background-color: blue; padding: 80px;">
+    <p v-parallax="{ speed: -0.2 }" style="background-color: blue; padding: 80px; transform: translate(-50px, 0px)">
       Parallax speed: -0.2
     </p>
     <p v-parallax="{ speed: -0.5 }" style="background-color: green; padding: 80px;">
