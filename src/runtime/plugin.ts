@@ -7,8 +7,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       element._originalTransform = window.getComputedStyle(element).transform
       if(element._originalTransform === 'none') element._originalTransform = undefined
 
-      console.log(element._originalTransform)
-
       const sanitizedOptions = { speed: binding.value.speed || 1 }
       const debouncedHandleScroll = debounce(() => handleScroll(element, sanitizedOptions), 10)
 
